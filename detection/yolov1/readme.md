@@ -22,7 +22,7 @@ $ mv yolov1.pt checkpoints
 $ python detect.py 
 ```
 
-<img src="C:\Users\Administrator\Desktop\yolov1\resources\result.png" alt="result"  />
+<img src="resources/result.png" alt="result"  />
 
 ### 训练
 
@@ -41,7 +41,7 @@ $ cd data && python voc_label.py   # 注意修改为自己的路径
 $ python train.py
 ```
 
-![loss](resources\loss.png)
+![loss](resources/loss.png)
 
 ### 指标评估
 
@@ -64,7 +64,7 @@ $ cd mAP/scripts && python get_DR.py  # 注意修改为自己的路径
 # cd mAP && python main.py
 ```
 
-![mAP](resources\mAP.png)
+![mAP](resources/mAP.png)
 
 ### 参考资料
 
