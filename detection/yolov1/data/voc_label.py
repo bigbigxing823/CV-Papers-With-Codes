@@ -27,9 +27,9 @@ def convert_annotation(data_path, image_id):
     h = int(size.find('height').text)
     if root.iter('object'):
         for obj in root.iter('object'):
-            difficult = obj.find('difficult').text
+            # difficult = obj.find('difficult').text
             cls = obj.find('name').text
-            if cls not in classes or int(difficult) == 1:
+            if cls not in classes:
                 continue
             cls_id = classes.index(cls)
             xmlbox = obj.find('bndbox')
@@ -44,18 +44,23 @@ def convert_annotation(data_path, image_id):
             b = (b1, b2, b3, b4)
             bb = convert((w, h), b)
             out_file.write(str(cls_id) + " " + " ".join([str(a) for a in bb]) + '\n')
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':
+    cur_path = os.getcwd()
     sets = ['train', 'val', 'test']
     classes = ['crazing', 'inclusion', 'patches', 'pitted_surface', 'rolled-in_scale', 'scratches']
-    data_path = r'NEU-DET'
+    data_path = cur_path + r'/NEU-DET'
     for image_set in sets:
         if not os.path.exists(os.path.join(data_path, 'labels')):
             os.makedirs(os.path.join(data_path, 'labels'))
         image_ids = open(data_path + '/ImageSets/Main/%s.txt' % (image_set)).read().strip().split()
         list_file = open(data_path+'/%s.txt' % (image_set), 'w')
         for image_id in image_ids:
-            list_file.write(f'{data_path}/JPEGImages/{image_id}.jpg {data_path}/labels/{image_id}.txt\n')
-            convert_annotation(data_path, image_id)
+            flag = convert_annotation(data_path, image_id)
+            if flag:
+                list_file.write(f'{data_path}/JPEGImages/{image_id}.jpg {data_path}/labels/{image_id}.txt\n')
         list_file.close()
